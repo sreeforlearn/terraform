@@ -1,2 +1,18 @@
-
-# ci trigger test Monday 29 June 2026 12:55:40 AM IST
+aws_region           = "ap-south-1"
+environment          = "dev"
+vpc_cidr             = "10.1.0.0/16"
+availability_zones   = ["ap-south-1a", "ap-south-1b"]
+enable_nat_gateway   = false
+instance_type        = "t2.nano"
+asg_min_size         = 1
+asg_max_size         = 2
+asg_desired_capacity = 1
+create_rds           = true
+db_name              = "appdb"
+db_username          = "admin"
+db_instance_class    = "db.t3.micro"
+db_allocated_storage = 20
+log_bucket_name      = "my-dev-nginx-logs-unique-name-123"
+notification_email   = "your-actual-email@example.com"
+cpu_target_value            = 60
+request_count_target_value = 500
