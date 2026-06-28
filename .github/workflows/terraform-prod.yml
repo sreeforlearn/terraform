@@ -1,0 +1,89 @@
+name: Terraform Prod
+
+on:
+  pull_request:
+    paths: ['environments/prod/**', 'modules/**']
+  push:
+    branches: [main]
+    paths: ['environments/prod/**', 'modules/**']
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  AWS_REGION: ap-south-1
+  TF_WORKING_DIR: environments/prod
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ env.TF_WORKING_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::938822141717:role/github-actions-terraform-role
+          aws-region: ${{ env.AWS_REGION }}
+      - run: terraform init
+      - run: terraform validate
+      - name: Terraform Plan
+        run: terraform plan -no-color -out=tfplan | tee plan_output.txt
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+      - name: Comment Plan on PR
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const plan = fs.readFileSync('environments/prod/plan_output.txt', 'utf8').slice(0, 60000);
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `### Terraform Plan (prod)\n\`\`\`\n${plan}\n\`\`\``
+            });
+      - name: Upload plan
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-tfplan
+          path: ${{ env.TF_WORKING_DIR }}/tfplan
+          retention-days: 1
+
+  apply:
+    needs: plan
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production   # 🔒 pauses here for manual approval
+    defaults:
+      run:
+        working-directory: ${{ env.TF_WORKING_DIR }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.0
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::938822141717:role/github-actions-terraform-role
+          aws-region: ${{ env.AWS_REGION }}
+      - run: terraform init
+      - name: Download plan
+        uses: actions/download-artifact@v4
+        with:
+          name: prod-tfplan
+          path: ${{ env.TF_WORKING_DIR }}
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
