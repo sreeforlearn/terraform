@@ -2,10 +2,14 @@ name: Terraform Prod
 
 on:
   pull_request:
-    paths: ['environments/prod/**', 'modules/**']
+    paths:
+      - 'terraform-project/terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/prod/**'
+      - 'terraform-project/terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/modules/**'
   push:
     branches: [main]
-    paths: ['environments/prod/**', 'modules/**']
+    paths:
+      - 'terraform-project/terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/prod/**'
+      - 'terraform-project/terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/modules/**'
 
 permissions:
   id-token: write
@@ -14,7 +18,7 @@ permissions:
 
 env:
   AWS_REGION: ap-south-1
-  TF_WORKING_DIR: environments/prod
+  TF_WORKING_DIR: terraform-project/terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/prod
 
 jobs:
   plan:
@@ -44,7 +48,7 @@ jobs:
         with:
           script: |
             const fs = require('fs');
-            const plan = fs.readFileSync('environments/prod/plan_output.txt', 'utf8').slice(0, 60000);
+            const plan = fs.readFileSync('terraform-project/terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/prod/plan_output.txt', 'utf8').slice(0, 60000);
             github.rest.issues.createComment({
               issue_number: context.issue.number,
               owner: context.repo.owner,
@@ -63,7 +67,7 @@ jobs:
     needs: plan
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
-    environment: production   # 🔒 pauses here for manual approval
+    environment: production
     defaults:
       run:
         working-directory: ${{ env.TF_WORKING_DIR }}
