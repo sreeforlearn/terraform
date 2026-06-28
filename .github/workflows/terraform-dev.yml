@@ -1,20 +1,23 @@
 name: Terraform Dev
+env:
+  AWS_REGION: ap-south-1
+  TF_WORKING_DIR: terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/dev
 
 on:
   pull_request:
-    paths: ['environments/dev/**', 'modules/**']
+    paths:
+      - 'terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/dev/**'
+      - 'terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/modules/**'
   push:
     branches: [main]
-    paths: ['environments/dev/**', 'modules/**']
+    paths:
+      - 'terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/environments/dev/**'
+      - 'terraform-modules/3-tier-with-vault-cloudwatch-sns-multienvsetup/modules/**'
 
 permissions:
   id-token: write
   contents: read
   pull-requests: write
-
-env:
-  AWS_REGION: ap-south-1
-  TF_WORKING_DIR: environments/dev
 
 jobs:
   terraform:
