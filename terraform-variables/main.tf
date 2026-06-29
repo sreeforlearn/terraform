@@ -5,9 +5,9 @@ provider "aws" {
 #varibales.tf
 
 variable "s3_bucket_name" {
-  type = string
+  type        = string
   description = "S3 bucket Name"
-  default = "iamdefault-named-bucket"
+  default     = "iamdefault-named-bucket"
 }
 
 resource "aws_s3_bucket" "example" {
@@ -15,6 +15,6 @@ resource "aws_s3_bucket" "example" {
 }
 
 output "bucket_arn" {
-  value = aws_s3_bucket.example.arn
+  value       = aws_s3_bucket.example.arn
   description = "It give arn of s3"
 }

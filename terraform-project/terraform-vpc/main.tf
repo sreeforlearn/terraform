@@ -19,8 +19,8 @@ resource "aws_vpc" "main" {
 locals {
   # Step 1: List of objects prepare chestunnam (Data structure)
   subnet_specs = [
-    { name = "public-1",  az_index = 0, cidr_num = 0, type = "public"  },
-    { name = "public-2",  az_index = 1, cidr_num = 1, type = "public"  },
+    { name = "public-1", az_index = 0, cidr_num = 0, type = "public" },
+    { name = "public-2", az_index = 1, cidr_num = 1, type = "public" },
     { name = "private-1", az_index = 0, cidr_num = 2, type = "private" },
     { name = "private-2", az_index = 1, cidr_num = 3, type = "private" }
   ]
@@ -36,7 +36,7 @@ locals {
 resource "aws_subnet" "this" {
   for_each = local.subnet_map # Map icham
 
-  vpc_id                  = aws_vpc.main.id
+  vpc_id = aws_vpc.main.id
   # cidrsubnet function use chesi 10.0.0.0/16 ni split chestunnam
   cidr_block              = cidrsubnet(var.vpc_cidr, 4, each.value.cidr_num)
   availability_zone       = var.availability_zones[each.value.az_index]
@@ -103,7 +103,7 @@ resource "aws_route_table" "private" {
 # Public subnets ki public RT attach chestunna logic
 resource "aws_route_table_association" "public" {
   for_each = { for k, v in local.subnet_map : k => k if v.type == "public" }
-  
+
   subnet_id      = aws_subnet.this[each.key].id
   route_table_id = aws_route_table.public.id
 }
@@ -111,7 +111,7 @@ resource "aws_route_table_association" "public" {
 # Private subnets ki private RT attach chestunna logic
 resource "aws_route_table_association" "private" {
   for_each = { for k, v in local.subnet_map : k => v if v.type == "private" }
-  
+
   subnet_id      = aws_subnet.this[each.key].id
   route_table_id = aws_route_table.private.id
 }

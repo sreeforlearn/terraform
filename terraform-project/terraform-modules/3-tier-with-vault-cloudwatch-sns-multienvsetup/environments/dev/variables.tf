@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "environment" {
-  type    = string
+  type = string
 }
 
 variable "vpc_cidr" {
@@ -85,4 +85,8 @@ variable "cpu_target_value" {
 variable "request_count_target_value" {
   type    = number
   default = 1000
+}
+
+variable "vault_address" {
+  type = string
 }

@@ -10,8 +10,8 @@ resource "aws_vpc" "main" {
 
 locals {
   subnet_specs = [
-    { name = "public-1",  az_index = 0, cidr_num = 0, type = "public"  },
-    { name = "public-2",  az_index = 1, cidr_num = 1, type = "public"  },
+    { name = "public-1", az_index = 0, cidr_num = 0, type = "public" },
+    { name = "public-2", az_index = 1, cidr_num = 1, type = "public" },
     { name = "private-1", az_index = 0, cidr_num = 2, type = "private" },
     { name = "private-2", az_index = 1, cidr_num = 3, type = "private" }
   ]
