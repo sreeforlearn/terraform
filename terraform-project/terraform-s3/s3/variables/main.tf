@@ -5,9 +5,9 @@ provider "aws" {
 #varibales.tf
 
 variable "s3_bucket_name" {
-  type = String
+  type        = String
   description = "S3 bucket Name"
-  default = "iamdefault-named-bucket"
+  default     = "iamdefault-named-bucket"
   sensitivity = true
 }
 
@@ -16,6 +16,6 @@ resource "aws_s3_bucket" "example" {
 }
 
 output "bucket_arn" {
-  value = aws_s3.bucket.example.arn
+  value       = aws_s3.bucket.example.arn
   description = "It give arn of s3"
 }
