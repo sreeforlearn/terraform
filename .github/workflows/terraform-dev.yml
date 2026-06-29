@@ -56,9 +56,9 @@ jobs:
               repo: context.repo.repo,
               body: `### Terraform Plan (dev)\n\`\`\`\n${plan}\n\`\`\``
             });
-    #  - name: Terraform Apply
-     #   if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    #    run: terraform apply -auto-approve tfplan
-   ##     env:
-     #     VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-       #   VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
+        env:
+          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
+          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
