@@ -19,7 +19,7 @@ provider "aws" {
 }
 
 provider "vault" {
-  skip_child_token = true 
+  skip_child_token = true
 }
 
 data "vault_kv_secret_v2" "rds_password" {
