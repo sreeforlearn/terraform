@@ -60,7 +60,7 @@ resource "aws_launch_template" "web_template" {
               <!DOCTYPE html>
               <html>
               <head>
-                <title>Dev Environment</title>
+                <title>Staging Environment</title>
                 <style>
                   body {
                     background-color: #f0f8ff;
@@ -89,8 +89,8 @@ resource "aws_launch_template" "web_template" {
               </head>
               <body>
                 <h1>Hello from Server: $(hostname -f)</h1>
-                <p>Welcome to the <strong>Development Environment</strong></p>
-                <div class="env-banner">⚡ DEV ENVIRONMENT ⚡</div>
+                <p>Welcome to the <strong>Staging Environment</strong></p>
+                <div class="env-banner">⚡ STAGE ENVIRONMENT ⚡</div>
               </body>
               </html>
               EOT
