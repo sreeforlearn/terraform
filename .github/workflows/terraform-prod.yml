@@ -35,10 +35,11 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::938822141717:role/github-actions-terraform-role
           aws-region: ${{ env.AWS_REGION }}
+      - run: terraform fmt -check -recursive
       - run: terraform init
       - run: terraform validate
       - name: Terraform Plan
-        run: terraform plan -no-color -out=tfplan | tee plan_output.txt
+        run: terraform plan -no-color -input=false -out=tfplan | tee plan_output.txt
         env:
           VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
           VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
