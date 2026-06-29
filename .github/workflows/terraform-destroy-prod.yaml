@@ -1,4 +1,4 @@
-name: Terraform Destroy staging
+name: Terraform Destroy prod
 
 on:
   workflow_dispatch:   # manual trigger from GitHub Actions UI
