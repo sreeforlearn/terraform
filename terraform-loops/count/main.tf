@@ -3,17 +3,17 @@ provider "aws" {
 }
 
 resource "aws_s3_bucket" "logs" {
-  count = 3
+  count  = 3
   bucket = "my-app-logs-${count.index}"
 }
 
 variable "enable_backup_bucket" {
-  type = bool
+  type    = bool
   default = false
 }
 
 resource "aws_s3_bucket" "backup" {
-  count = var.enable_backup_bucket ? 1 : 0 
+  count  = var.enable_backup_bucket ? 1 : 0
   bucket = "my-app-backup-bucket"
 
 }

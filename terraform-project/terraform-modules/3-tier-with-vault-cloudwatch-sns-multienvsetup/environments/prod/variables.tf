@@ -87,3 +87,7 @@ variable "request_count_target_value" {
   type    = number
   default = 1000
 }
+
+variable "vault_address" {
+  type = string
+}
