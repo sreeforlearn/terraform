@@ -25,7 +25,7 @@ provider "vault" {
 
 data "vault_kv_secret_v2" "rds_password" {
   mount = "secret"
-  name  = "prod/rds"
+  name  = "dev/rds"
 }
 
 ########################
@@ -34,7 +34,7 @@ data "vault_kv_secret_v2" "rds_password" {
 terraform {
   backend "s3" {
     bucket         = "state-lock-s3-for-tester-by-sree" # same name as above
-    key            = "3-tier/terraform.tfstate"
+    key            = "envs/dev/terraform.tfstate"
     region         = "ap-south-1"
     dynamodb_table = "terraform-state-lock"
     encrypt        = true
