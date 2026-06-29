@@ -34,5 +34,5 @@ jobs:
       - name: Terraform Destroy
         run: terraform destroy -auto-approve
         env:
-          VAULT_ADDR: ${{ secrets.VAULT_ADDR }}
-          VAULT_TOKEN: ${{ secrets.VAULT_TOKEN }}
+          TF_VAR_vault_address: ${{ secrets.VAULT_ADDR }}
+          TF_VAR_vault_token: ${{ secrets.VAULT_TOKEN }}
