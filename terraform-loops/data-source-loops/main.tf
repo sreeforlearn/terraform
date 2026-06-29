@@ -36,7 +36,7 @@ locals {
 # Query chesina subnet count ki equal ga Security groups create avuthayi!
 resource "aws_security_group" "app_sg" {
   for_each = local.subnet_map
-  
+
   name        = "app-sg-for-${each.key}"
   description = "Security group dynamically created for subnet ${each.key}"
   vpc_id      = data.aws_vpc.default.id
@@ -48,9 +48,9 @@ resource "aws_security_group" "app_sg" {
     protocol    = "-1"
     cidr_blocks = ["0.0.0.0/0"]
   }
-  
+
   tags = {
-    SubnetID = each.key
+    SubnetID  = each.key
     CreatedBy = "Terraform-Logic"
   }
 }
@@ -59,11 +59,11 @@ resource "aws_security_group" "app_sg" {
 # STEP 4: OUTPUTS (To see the magic)
 # ==========================================
 output "queried_subnet_count" {
-  value = length(data.aws_subnets.private.ids)
+  value       = length(data.aws_subnets.private.ids)
   description = "Manam query chesina subnets count"
 }
 
 output "created_sg_names" {
-  value = [for sg in aws_security_group.app_sg : sg.name]
+  value       = [for sg in aws_security_group.app_sg : sg.name]
   description = "Dynamically create ayyina SG names list"
 }

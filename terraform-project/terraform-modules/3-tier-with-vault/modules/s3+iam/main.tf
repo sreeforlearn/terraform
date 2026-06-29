@@ -8,10 +8,10 @@ resource "aws_s3_bucket" "nginx_logs" {
 # S3 public block access
 ############################
 resource "aws_s3_bucket_public_access_block" "nginx_logs" {
-  bucket = aws_s3_bucket.nginx_logs.id
-  block_public_acls = true
-  block_public_policy = true
-  ignore_public_acls = true
+  bucket                  = aws_s3_bucket.nginx_logs.id
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
   restrict_public_buckets = true
 }
 ##########################
@@ -27,7 +27,7 @@ resource "aws_s3_bucket_versioning" "nginx_logs" {
 # Iam Policy
 #########################
 resource "aws_iam_policy" "s3_write_policy" {
-  name = "${var.environment}-NginxLogsWritePolicy"
+  name        = "${var.environment}-NginxLogsWritePolicy"
   description = "Allow ec2 to write logs only to our specific bucket"
   policy = jsonencode({
     Version = "2012-10-17"
@@ -70,7 +70,7 @@ resource "aws_iam_role" "ec2_logging_role" {
 # Role Attachment
 ########################
 resource "aws_iam_role_policy_attachment" "logging_attach" {
-  role = aws_iam_role.ec2_logging_role.name
+  role       = aws_iam_role.ec2_logging_role.name
   policy_arn = aws_iam_policy.s3_write_policy.arn
 }
 #######################

@@ -6,7 +6,7 @@ terraform {
       version = "~> 5.0"
     }
     vault = {
-      source = "hashicorp/vault"
+      source  = "hashicorp/vault"
       version = "~> 4.0"
     }
   }
@@ -34,7 +34,7 @@ terraform {
     bucket         = "state-lock-s3-for-tester-by-sree" # same name as above
     key            = "3-tier/terraform.tfstate"
     region         = "ap-south-1"
-    dynamodb_table   = "terraform-state-lock"
+    dynamodb_table = "terraform-state-lock"
     encrypt        = true
   }
 }
@@ -66,19 +66,19 @@ module "asg" {
   source = "../../modules/asg"
 
   environment                = var.environment
-  vpc_id                      = module.vpc.vpc_id
-  public_subnet_ids           = module.vpc.public_subnet_ids
-  alb_sg_id                   = module.alb.alb_sg_id
-  target_group_arn            = module.alb.target_group_arn
-  instance_type                = var.instance_type
-  min_size                      = var.asg_min_size
-  max_size                      = var.asg_max_size
-  desired_capacity               = var.asg_desired_capacity
-  iam_instance_profile_name      = module.s3_logging.instance_profile_name
-  alb_arn_suffix                  = module.alb.alb_arn_suffix
-  target_group_arn_suffix          = module.alb.target_group_arn_suffix
-  cpu_target_value                  = var.cpu_target_value
-  request_count_target_value        = var.request_count_target_value
+  vpc_id                     = module.vpc.vpc_id
+  public_subnet_ids          = module.vpc.public_subnet_ids
+  alb_sg_id                  = module.alb.alb_sg_id
+  target_group_arn           = module.alb.target_group_arn
+  instance_type              = var.instance_type
+  min_size                   = var.asg_min_size
+  max_size                   = var.asg_max_size
+  desired_capacity           = var.asg_desired_capacity
+  iam_instance_profile_name  = module.s3_logging.instance_profile_name
+  alb_arn_suffix             = module.alb.alb_arn_suffix
+  target_group_arn_suffix    = module.alb.target_group_arn_suffix
+  cpu_target_value           = var.cpu_target_value
+  request_count_target_value = var.request_count_target_value
 }
 module "rds" {
   count  = var.create_rds ? 1 : 0
@@ -97,9 +97,9 @@ module "rds" {
 module "monitoring" {
   source = "../../modules/monitoring"
 
-  environment              = var.environment
-  notification_email       = var.notification_email
-  asg_name                 = module.asg.asg_name
-  alb_arn_suffix           = module.alb.alb_arn_suffix
-  target_group_arn_suffix  = module.alb.target_group_arn_suffix
+  environment             = var.environment
+  notification_email      = var.notification_email
+  asg_name                = module.asg.asg_name
+  alb_arn_suffix          = module.alb.alb_arn_suffix
+  target_group_arn_suffix = module.alb.target_group_arn_suffix
 }

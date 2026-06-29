@@ -4,7 +4,7 @@ variable "aws_region" {
 }
 
 variable "environment" {
-  type    = string
+  type = string
 }
 
 variable "vpc_cidr" {
